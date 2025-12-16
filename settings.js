@@ -30,6 +30,7 @@ const importFile = document.getElementById('importFile');
 const exportBtn = document.getElementById('exportBtn');
 const demoBtn = document.getElementById('demoBtn');
 const clearBtn = document.getElementById('clearBtn');
+const installBtn = document.getElementById('installBtn');
 const confirmModal = document.getElementById('confirmModal');
 const confirmMessage = document.getElementById('confirmMessage');
 const confirmAction = document.getElementById('confirmAction');
@@ -37,6 +38,7 @@ const cancelConfirm = document.getElementById('cancelConfirm');
 const toast = document.getElementById('toast');
 
 let pendingAction = null;
+let deferredPrompt = null;
 
 // Dati demo
 const demoData = [
@@ -264,4 +266,42 @@ clearBtn.addEventListener('click', () => {
             }, 1000);
         }
     );
+});
+
+// PWA Installation
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Previeni il prompt automatico
+    e.preventDefault();
+    deferredPrompt = e;
+    // Mostra il bottone di installazione
+    installBtn.style.display = 'inline-flex';
+});
+
+installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) {
+        showToast('App already installed or not available for installation', 'error');
+        return;
+    }
+    
+    // Mostra il prompt di installazione
+    deferredPrompt.prompt();
+    
+    // Aspetta la risposta dell'utente
+    const { outcome } = await deferredPrompt.userChoice;
+    
+    if (outcome === 'accepted') {
+        showToast('App installed successfully!', 'success');
+    } else {
+        showToast('Installation cancelled', 'error');
+    }
+    
+    // Reset del prompt
+    deferredPrompt = null;
+    installBtn.style.display = 'none';
+});
+
+// Nasconde il bottone se l'app è già installata
+window.addEventListener('appinstalled', () => {
+    installBtn.style.display = 'none';
+    showToast('Zakupy™ installed successfully!', 'success');
 });

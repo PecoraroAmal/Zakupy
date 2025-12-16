@@ -2,8 +2,7 @@
 
 **Zakupy™** (Polish for "shopping") is a simple, privacy-focused progressive web app for managing your shopping lists. It helps you organize your shopping items by location, manage recurring purchases, and keep track of your shopping history—all without collecting any personal data.
 
-🔗 **[Live Demo]( https://pecoraroamal.github.io/Zakupy/)** *(update with your actual URL)*
-
+🔗 **[Live Demo]( https://pecoraroamal.github.io/Zakupy/)** 
 ## Features
 
 ### 📝 Shopping List Management

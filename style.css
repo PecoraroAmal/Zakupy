@@ -684,6 +684,13 @@ button[type="submit"] {
   justify-content: center;
 }
 
+/* Nascondi Install button su desktop */
+@media (min-width: 641px) {
+  #installBtn {
+    display: none !important;
+  }
+}
+
 /* Utilities */
 .hidden {
   display: none !important;

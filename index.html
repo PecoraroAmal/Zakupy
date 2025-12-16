@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#4CAF50">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Zakupy™ - Shopping List</title>
+    <link rel="icon" type="image/png" href="icons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="icons/favicon.svg" />
+    <link rel="shortcut icon" href="icons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Zakupy™" />
+    <link rel="manifest" href="icons/site.webmanifest" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Zakupy™</h1>
+    </header>
+
+    <main>
+        <section class="add-item-section">
+            <h2>Add Item</h2>
+            <form id="addItemForm">
+                <div class="form-group">
+                    <label for="itemName"><i class="fas fa-tag"></i> Item Name</label>
+                    <input type="text" id="itemName" required placeholder="e.g., Milk">
+                </div>
+                
+                <div class="form-group">
+                    <label for="itemQuantity"><i class="fa-solid fa-scale-balanced"></i> Quantity</label>
+                    <input type="number" id="itemQuantity" step="any" required placeholder="e.g., 2">
+                </div>
+                
+                <div class="form-group">
+                    <label for="itemLocation"><i class="fa-solid fa-shop"></i> Location</label>
+                    <select id="itemLocation">
+                        <option value="">Select location...</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="newLocation"><i class="fas fa-plus-circle"></i> Or Add New Location</label>
+                    <input type="text" id="newLocation" placeholder="New location name">
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="isRecurring">
+                        <i class="fas fa-redo"></i> Recurring Item
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Item
+                </button>
+            </form>
+        </section>
+
+        <section class="shopping-list-section">
+            <h2>Shopping List</h2>
+            <div id="shoppingList"></div>
+            <div id="emptyState" class="empty-state">
+                <i class="fas fa-shopping-basket"></i>
+                <p>Your shopping list is empty</p>
+                <p class="hint">Add items above to get started</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal di alert -->
+    <div id="alertModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Alert</h3>
+                <button class="close-alert-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p id="alertMessage"></p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary close-alert-modal">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="active"><i class="fas fa-home"></i></a>
+        <a href="recurring.html"><i class="fas fa-sync"></i></a>
+        <a href="locations.html"><i class="fa-solid fa-shop"></i></a>
+        <a href="history.html"><i class="fas fa-history"></i></a>
+        <a href="settings.html"><i class="fas fa-cog"></i></a>
+    </nav>
+
+    <script src="index.js"></script>
+</body>
+</html>

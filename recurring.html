@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#4CAF50">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Zakupy™ - Recurring Items</title>
+    <link rel="icon" type="image/png" href="icons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="icons/favicon.svg" />
+    <link rel="shortcut icon" href="icons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Zakupy™" />
+    <link rel="manifest" href="icons/site.webmanifest" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Zakupy™</h1>
+    </header>
+
+    <main>
+        <section class="recurring-section">
+            <div class="section-header">
+                <h2>Recurring Items</h2>
+                <button id="loadAllBtn" class="btn btn-success">
+                    <i class="fas fa-play"></i> Add All
+                </button>
+            </div>
+            
+            <div id="recurringList"></div>
+            
+            <div id="emptyState" class="empty-state">
+                <i class="fas fa-redo"></i>
+                <p>No recurring items yet</p>
+                <p class="hint">Add recurring items from the home page</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal di alert -->
+    <div id="alertModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Alert</h3>
+                <button class="close-alert-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p id="alertMessage"></p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary close-alert-modal">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal di conferma delete -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirm Delete</h3>
+                <button class="close-confirm-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage"></p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary cancel-confirm">Cancel</button>
+                <button class="btn btn-danger confirm-delete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal per modificare elemento -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Recurring Item</h3>
+                <button class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="editForm">
+                <div class="form-group">
+                    <label for="editName"><i class="fas fa-tag"></i> Item Name</label>
+                    <input type="text" id="editName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editQuantity"><i class="fa-solid fa-scale-balanced"></i> Quantity</label>
+                    <input type="number" id="editQuantity" step="any" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editLocation"><i class="fa-solid fa-shop"></i> Location</label>
+                    <select id="editLocation">
+                        <option value="">Select location...</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editNewLocation"><i class="fas fa-plus-circle"></i> Or Add New Location</label>
+                    <input type="text" id="editNewLocation" placeholder="New location name">
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary cancel-edit">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html"><i class="fas fa-home"></i></a>
+        <a href="recurring.html" class="active"><i class="fas fa-sync"></i></a>
+        <a href="locations.html"><i class="fa-solid fa-shop"></i></a>
+        <a href="history.html"><i class="fas fa-history"></i></a>
+        <a href="settings.html"><i class="fas fa-cog"></i></a>
+    </nav>
+
+    <!-- Modal di successo -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Success</h3>
+            </div>
+            <div class="modal-body">
+                <p id="successMessage"></p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-success" id="goToShoppingList">Go to Shopping List</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="recurring.js"></script>
+</body>
+</html>

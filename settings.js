@@ -273,8 +273,6 @@ window.addEventListener('beforeinstallprompt', (e) => {
     // Previeni il prompt automatico
     e.preventDefault();
     deferredPrompt = e;
-    // Mostra il bottone di installazione
-    installBtn.style.display = 'inline-flex';
 });
 
 installBtn.addEventListener('click', async () => {
@@ -297,11 +295,9 @@ installBtn.addEventListener('click', async () => {
     
     // Reset del prompt
     deferredPrompt = null;
-    installBtn.style.display = 'none';
 });
 
-// Nasconde il bottone se l'app è già installata
+// Notifica quando l'app è installata
 window.addEventListener('appinstalled', () => {
-    installBtn.style.display = 'none';
     showToast('Zakupy™ installed successfully!', 'success');
 });

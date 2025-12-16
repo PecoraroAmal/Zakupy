@@ -671,6 +671,19 @@ button[type="submit"] {
   color: white;
 }
 
+/* Button Stack */
+.button-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.button-stack .btn {
+  width: 100%;
+  justify-content: center;
+}
+
 /* Utilities */
 .hidden {
   display: none !important;

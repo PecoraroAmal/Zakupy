@@ -196,6 +196,9 @@ function restoreLocationItems(location) {
     // Mostra modal di conferma
     pendingRestoreLocation = location;
     confirmMessage.textContent = `${TEXTS.restoreAll} ${locationItems.length} ${TEXTS.itemsFrom} ${capitalize(location)}?`;
+    // Reset del bottone per il ripristino (verde)
+    confirmRestoreBtn.innerHTML = `<i class="fas fa-undo"></i> ${TEXTS.restore}`;
+    confirmRestoreBtn.className = 'btn btn-success confirm-restore';
     confirmModal.classList.add('show');
 }
 

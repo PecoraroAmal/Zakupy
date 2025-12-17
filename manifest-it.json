@@ -30,6 +30,6 @@
   "theme_color": "#000000",
   "background_color": "#000000",
   "display": "standalone",
-  "start_url": "./indice.html?v=2.7",
+  "start_url": "./indice.html?v=2.8",
   "scope": "./"
 }

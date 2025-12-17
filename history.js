@@ -210,11 +210,8 @@ function executeRestoreLocation() {
     if (pendingRestoreLocation === 'CLEAR_ALL') {
         historyItems = [];
         saveToStorage(STORAGE_KEYS.HISTORY, historyItems);
-        closeConfirmModal();
         renderHistory();
-        // Reset bottone
-        confirmRestoreBtn.innerHTML = `<i class="fas fa-undo"></i> ${TEXTS.restore}`;
-        confirmRestoreBtn.className = 'btn btn-success';
+        closeConfirmModal();
         return;
     }
     

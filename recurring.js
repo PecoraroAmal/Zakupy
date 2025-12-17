@@ -357,7 +357,7 @@ loadAllBtn.addEventListener('click', () => {
 
 // Handler per il bottone del modal di successo
 goToShoppingListBtn.addEventListener('click', () => {
-    window.location.href = isItalian() ? 'indice.html?v=2.5' : 'index.html?v=2.5';
+    window.location.href = isItalian() ? 'indice.html?v=2.6' : 'index.html?v=2.6';
 });
 
 // Chiudi modal di successo cliccando fuori

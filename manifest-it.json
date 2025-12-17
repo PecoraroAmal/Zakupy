@@ -1,7 +1,8 @@
 {
   "name": "Zakupy™",
   "short_name": "Zakupy™",
-  "description": "A simple, privacy-focused shopping list app.",
+  "description": "Una semplice app per liste della spesa incentrata sulla privacy.",
+  "lang": "it",
   "icons": [
     {
       "src": "icons/web-app-manifest-192x192.png",
@@ -29,7 +30,6 @@
   "theme_color": "#000000",
   "background_color": "#000000",
   "display": "standalone",
-  "start_url": "./index.html?v=2.3",
-  "scope": "./",
-  "lang": "en"
+  "start_url": "./indice.html?v=2.3",
+  "scope": "./"
 }

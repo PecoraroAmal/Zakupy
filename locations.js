@@ -1,3 +1,17 @@
+// Rilevamento lingua
+function isItalian() {
+    return document.documentElement.lang === 'it' || window.location.pathname.includes('posizioni.html');
+}
+
+// Testi multilingua
+const TEXTS = {
+    alertExists: isItalian() ? 'Esiste già un luogo con questo nome!' : 'A location with this name already exists!',
+    confirmDelete: (name) => isItalian() ? 
+        `Sei sicuro di voler eliminare "${name}"? Questa azione non può essere annullata!` : 
+        `Are you sure you want to delete "${name}"? This action cannot be undone!`,
+    selectLocation: isItalian() ? 'Seleziona luogo...' : 'Select location...'
+};
+
 // Gestione dello storage locale
 const STORAGE_KEYS = {
     ITEMS: 'zakupy_items',
@@ -157,7 +171,7 @@ addLocationForm.addEventListener('submit', (e) => {
     const existingLocation = locations.find(loc => loc.name.toLowerCase() === name.toLowerCase());
     
     if (existingLocation) {
-        showAlert('A location with this name already exists!');
+        showAlert(TEXTS.alertExists);
         return;
     }
     
@@ -238,7 +252,7 @@ function deleteLocation(id) {
     if (!location) return;
     
     showConfirm(
-        `Are you sure you want to delete "${location.name}"? This action cannot be undone!`,
+        TEXTS.confirmDelete(location.name),
         () => {
             locations = locations.filter(l => l.id !== id);
             saveToStorage(STORAGE_KEYS.LOCATIONS, locations);
@@ -282,7 +296,7 @@ editForm.addEventListener('submit', (e) => {
     );
     
     if (existingLocation) {
-        showAlert('A location with this name already exists!');
+        showAlert(TEXTS.alertExists);
         return;
     }
     

@@ -1,3 +1,16 @@
+// Rilevamento lingua
+function isItalian() {
+    return document.documentElement.lang === 'it' || window.location.pathname.includes('cronologia.html');
+}
+
+// Testi multilingua
+const TEXTS = {
+    confirmClear: isItalian() ? 
+        'Sei sicuro di voler cancellare tutta la cronologia? Questa azione non può essere annullata!' : 
+        'Are you sure you want to clear all history? This action cannot be undone!',
+    clearAll: isItalian() ? 'Cancella Tutto' : 'Clear All'
+};
+
 // Gestione dello storage locale
 const STORAGE_KEYS = {
     ITEMS: 'zakupy_items',
@@ -243,8 +256,8 @@ let clearHistoryModal = null;
 
 function showClearHistoryConfirm() {
     pendingRestoreLocation = 'CLEAR_ALL';
-    confirmMessage.textContent = 'Are you sure you want to clear all history? This action cannot be undone!';
-    confirmRestoreBtn.innerHTML = '<i class="fas fa-trash"></i> Clear All';
+    confirmMessage.textContent = TEXTS.confirmClear;
+    confirmRestoreBtn.innerHTML = `<i class="fas fa-trash"></i> ${TEXTS.clearAll}`;
     confirmRestoreBtn.className = 'btn btn-danger';
     confirmModal.classList.add('show');
 }

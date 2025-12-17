@@ -1,3 +1,14 @@
+// Rilevamento lingua
+function isItalian() {
+    return document.documentElement.lang === 'it' || window.location.pathname.includes('indice.html');
+}
+
+// Testi multilingua
+const TEXTS = {
+    selectLocation: isItalian() ? 'Seleziona luogo...' : 'Select location...',
+    alertNoLocation: isItalian() ? 'Seleziona o aggiungi un luogo' : 'Please select or add a location'
+};
+
 // Gestione dello storage locale
 const STORAGE_KEYS = {
     ITEMS: 'zakupy_items',
@@ -109,7 +120,7 @@ function capitalize(str) {
 // Popola il dropdown delle location
 function populateLocations() {
     // Pulisce il select lasciando solo l'opzione di default
-    itemLocationSelect.innerHTML = '<option value="">Select location...</option>';
+    itemLocationSelect.innerHTML = `<option value="">${TEXTS.selectLocation}</option>`;
     
     // Aggiunge le location esistenti
     locations.forEach(location => {
@@ -151,7 +162,7 @@ addItemForm.addEventListener('submit', (e) => {
         populateLocations();
     } else if (!location) {
         // Location può essere null solo se new location non è null
-        showAlert('Please select or add a location');
+        showAlert(TEXTS.alertNoLocation);
         return;
     }
     

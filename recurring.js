@@ -1,3 +1,17 @@
+// Rilevamento lingua
+function isItalian() {
+    return document.documentElement.lang === 'it' || window.location.pathname.includes('ricorrenti.html');
+}
+
+// Testi multilingua
+const TEXTS = {
+    selectLocation: isItalian() ? 'Seleziona luogo...' : 'Select location...',
+    alertNoLocation: isItalian() ? 'Seleziona o aggiungi un luogo' : 'Please select or add a location',
+    alertNoItems: isItalian() ? 'Nessun articolo ricorrente da caricare' : 'No recurring items to load',
+    confirmDelete: isItalian() ? 'Sei sicuro di voler eliminare questo articolo ricorrente?' : 'Are you sure you want to delete this recurring item?',
+    successAdded: isItalian() ? 'articoli aggiunti alla lista della spesa!' : 'items added to shopping list!'
+};
+
 // Gestione dello storage locale
 const STORAGE_KEYS = {
     ITEMS: 'zakupy_items',
@@ -106,7 +120,7 @@ function capitalize(str) {
 
 // Popola il dropdown delle location nel modal
 function populateEditLocations() {
-    editLocationSelect.innerHTML = '<option value="">Select location...</option>';
+    editLocationSelect.innerHTML = `<option value="">${TEXTS.selectLocation}</option>`;
     
     locations.forEach(location => {
         const option = document.createElement('option');
@@ -219,7 +233,7 @@ function editItem(id) {
 // Elimina un elemento ricorrente
 function deleteItem(id) {
     showConfirm(
-        'Are you sure you want to delete this recurring item?',
+        TEXTS.confirmDelete,
         () => {
             recurringItems = recurringItems.filter(item => item.id !== id);
             saveToStorage(STORAGE_KEYS.RECURRING, recurringItems);
@@ -279,7 +293,7 @@ editForm.addEventListener('submit', (e) => {
         saveToStorage(STORAGE_KEYS.LOCATIONS, locations);
     } else if (!location) {
         // Location può essere null solo se new location non è null
-        showAlert('Please select or add a location');
+        showAlert(TEXTS.alertNoLocation);
         return;
     }
     
@@ -309,7 +323,7 @@ editNewLocationInput.addEventListener('input', () => {
 // Carica tutti gli elementi ricorrenti nella lista della spesa
 loadAllBtn.addEventListener('click', () => {
     if (recurringItems.length === 0) {
-        showAlert('No recurring items to load');
+        showAlert(TEXTS.alertNoItems);
         return;
     }
     
@@ -330,13 +344,13 @@ loadAllBtn.addEventListener('click', () => {
     saveToStorage(STORAGE_KEYS.ITEMS, items);
     
     // Mostra modal di successo
-    successMessage.textContent = `${recurringItems.length} items loaded to shopping list!`;
+    successMessage.textContent = `${recurringItems.length} ${TEXTS.successAdded}`;
     successModal.classList.add('show');
 });
 
 // Handler per il bottone del modal di successo
 goToShoppingListBtn.addEventListener('click', () => {
-    window.location.href = 'index.html';
+    window.location.href = isItalian() ? 'indice.html?v=2.3' : 'index.html?v=2.3';
 });
 
 // Chiudi modal di successo cliccando fuori

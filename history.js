@@ -251,6 +251,9 @@ function executeRestoreLocation() {
 function closeConfirmModal() {
     confirmModal.classList.remove('show');
     pendingRestoreLocation = null;
+    // Reset del bottone al suo stato predefinito
+    confirmRestoreBtn.innerHTML = `<i class="fas fa-undo"></i> ${TEXTS.restore}`;
+    confirmRestoreBtn.className = 'btn btn-success confirm-restore';
 }
 
 // Gestione modal

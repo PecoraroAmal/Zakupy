@@ -1,3 +1,30 @@
+// Rilevamento lingua
+function isItalian() {
+    const htmlLang = document.documentElement.lang;
+    const pathname = window.location.pathname;
+    return htmlLang === 'it' || pathname.includes('indice.html') || pathname.includes('ricorrenti.html') || pathname.includes('posizioni.html') || pathname.includes('cronologia.html') || pathname.includes('impostazioni.html');
+}
+
+// Testi multilingua (valutati dinamicamente)
+function getTexts() {
+    const isIt = isItalian();
+    return {
+        confirmDemo: isIt ? 
+            'Caricare dati demo? Verranno aggiunti articoli ricorrenti di esempio alla tua lista.' : 
+            'Load demo data? This will add sample recurring items to your list.',
+        successDemo: isIt ? 'Dati demo caricati con successo!' : 'Demo data loaded successfully!',
+        confirmClear: isIt ? 
+            'Cancellare tutti i dati? Questa azione non può essere annullata!' : 
+            'Clear all data? This action cannot be undone!',
+        successClear: isIt ? 'Tutti i dati sono stati cancellati!' : 'All data has been cleared!',
+        successImport: isIt ? 'Dati importati con successo!' : 'Data imported successfully!',
+        errorImport: isIt ? 'Errore durante l\'importazione dei dati' : 'Error importing data',
+        successExport: isIt ? 'Dati esportati con successo!' : 'Data exported successfully!'
+    };
+}
+
+const TEXTS = getTexts();
+
 // Gestione dello storage locale
 const STORAGE_KEYS = {
     ITEMS: 'zakupy_items',
@@ -152,7 +179,7 @@ importFile.addEventListener('change', (e) => {
                     const mergedLocations = [...new Set([...existingLocations, ...newLocations])];
                     saveToStorage(STORAGE_KEYS.LOCATIONS, mergedLocations);
                     
-                    showToast('Data imported successfully!', 'success');
+                    showToast(TEXTS.successImport, 'success');
                     
                     // Reset input file
                     importFile.value = '';
@@ -161,7 +188,7 @@ importFile.addEventListener('change', (e) => {
             );
             
         } catch (error) {
-            showToast('Error importing file. Please check the file format.', 'error');
+            showToast(TEXTS.errorImport, 'error');
             console.error('Errore import:', error);
         }
     };
@@ -199,13 +226,13 @@ exportBtn.addEventListener('click', () => {
     
     URL.revokeObjectURL(url);
     
-    showToast('Data exported successfully!', 'success');
+    showToast(TEXTS.successExport, 'success');
 });
 
 // Carica dati demo
 demoBtn.addEventListener('click', () => {
     showConfirmModal(
-        'Load demo data? This will add sample recurring items to your list.',
+        TEXTS.confirmDemo,
         () => {
             const existingItems = getFromStorage(STORAGE_KEYS.RECURRING);
             
@@ -242,7 +269,7 @@ demoBtn.addEventListener('click', () => {
             const mergedLocations = Array.from(locationMap.values());
             saveToStorage(STORAGE_KEYS.LOCATIONS, mergedLocations);
             
-            showToast('Demo data loaded successfully!', 'success');
+            showToast(TEXTS.successDemo, 'success');
         },
         true
     );
@@ -251,18 +278,18 @@ demoBtn.addEventListener('click', () => {
 // Cancella tutti i dati
 clearBtn.addEventListener('click', () => {
     showConfirmModal(
-        'Are you sure you want to clear all data? This action cannot be undone!',
+        TEXTS.confirmClear,
         () => {
             // Cancella tutti i dati
             localStorage.removeItem(STORAGE_KEYS.ITEMS);
             localStorage.removeItem(STORAGE_KEYS.RECURRING);
             localStorage.removeItem(STORAGE_KEYS.LOCATIONS);
             
-            showToast('All data has been cleared.', 'success');
+            showToast(TEXTS.successClear, 'success');
             
             // Reindirizza alla home dopo 1 secondo
             setTimeout(() => {
-                window.location.href = 'index.html';
+                window.location.href = isItalian() ? 'indice.html?v=2.3' : 'index.html?v=2.3';
             }, 1000);
         }
     );

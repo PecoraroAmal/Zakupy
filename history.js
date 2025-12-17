@@ -1,15 +1,28 @@
 // Rilevamento lingua
 function isItalian() {
-    return document.documentElement.lang === 'it' || window.location.pathname.includes('cronologia.html');
+    const htmlLang = document.documentElement.lang;
+    const pathname = window.location.pathname;
+    return htmlLang === 'it' || pathname.includes('indice.html') || pathname.includes('ricorrenti.html') || pathname.includes('posizioni.html') || pathname.includes('cronologia.html') || pathname.includes('impostazioni.html');
 }
 
-// Testi multilingua
-const TEXTS = {
-    confirmClear: isItalian() ? 
-        'Sei sicuro di voler cancellare tutta la cronologia? Questa azione non può essere annullata!' : 
-        'Are you sure you want to clear all history? This action cannot be undone!',
-    clearAll: isItalian() ? 'Cancella Tutto' : 'Clear All'
-};
+// Testi multilingua (valutati dinamicamente)
+function getTexts() {
+    const isIt = isItalian();
+    return {
+        confirmClear: isIt ? 
+            'Sei sicuro di voler cancellare tutta la cronologia? Questa azione non può essere annullata!' : 
+            'Are you sure you want to clear all history? This action cannot be undone!',
+        clearAll: isIt ? 'Cancella Tutto' : 'Clear All',
+        items: isIt ? 'articoli' : 'items',
+        restoreAll: isIt ? 'Ripristinare tutti' : 'Restore all',
+        itemsFrom: isIt ? 'articoli da' : 'items from',
+        restore: isIt ? 'Ripristina' : 'Restore',
+        restoreAllItems: isIt ? 'Ripristina tutti gli articoli da questo luogo' : 'Restore all items from this location',
+        restoreToList: isIt ? 'Ripristina alla lista della spesa' : 'Restore to shopping list'
+    };
+}
+
+const TEXTS = getTexts();
 
 // Gestione dello storage locale
 const STORAGE_KEYS = {
@@ -114,8 +127,8 @@ function renderHistory() {
             <div class="location-group">
                 <div class="location-group-header" style="border-left-color: ${locationColor};">
                     <h3>${capitalize(location)}</h3>
-                    <span style="opacity: 0.6; font-size: 14px; margin-left: auto;">${locationItems.length} items</span>
-                    <button class="btn-icon btn-add" onclick="restoreLocationItems('${location}')" title="Restore all items from this location" style="margin-left: 12px;">
+                    <span style="opacity: 0.6; font-size: 14px; margin-left: auto;">${locationItems.length} ${TEXTS.items}</span>
+                    <button class="btn-icon btn-add" onclick="restoreLocationItems('${location}')" title="${TEXTS.restoreAllItems}" style="margin-left: 12px;">
                         <i class="fas fa-undo"></i>
                     </button>
                 </div>
@@ -131,7 +144,7 @@ function renderHistory() {
                             <i class="fa-solid fa-scale-balanced"></i> ${item.quantity}
                         </div>
                     </div>
-                    <button class="btn-icon" onclick="restoreItem('${item.id}')" title="Restore to shopping list">
+                    <button class="btn-icon" onclick="restoreItem('${item.id}')" title="${TEXTS.restoreToList}">
                         <i class="fas fa-undo"></i>
                     </button>
                 </div>
@@ -182,7 +195,7 @@ function restoreLocationItems(location) {
     
     // Mostra modal di conferma
     pendingRestoreLocation = location;
-    confirmMessage.textContent = `Restore all ${locationItems.length} items from ${capitalize(location)}?`;
+    confirmMessage.textContent = `${TEXTS.restoreAll} ${locationItems.length} ${TEXTS.itemsFrom} ${capitalize(location)}?`;
     confirmModal.classList.add('show');
 }
 
@@ -197,7 +210,7 @@ function executeRestoreLocation() {
         closeConfirmModal();
         renderHistory();
         // Reset bottone
-        confirmRestoreBtn.innerHTML = '<i class="fas fa-undo"></i> Restore';
+        confirmRestoreBtn.innerHTML = `<i class="fas fa-undo"></i> ${TEXTS.restore}`;
         confirmRestoreBtn.className = 'btn btn-success';
         return;
     }

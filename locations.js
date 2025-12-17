@@ -1,16 +1,23 @@
 // Rilevamento lingua
 function isItalian() {
-    return document.documentElement.lang === 'it' || window.location.pathname.includes('posizioni.html');
+    const htmlLang = document.documentElement.lang;
+    const pathname = window.location.pathname;
+    return htmlLang === 'it' || pathname.includes('indice.html') || pathname.includes('ricorrenti.html') || pathname.includes('posizioni.html') || pathname.includes('cronologia.html') || pathname.includes('impostazioni.html');
 }
 
-// Testi multilingua
-const TEXTS = {
-    alertExists: isItalian() ? 'Esiste già un luogo con questo nome!' : 'A location with this name already exists!',
-    confirmDelete: (name) => isItalian() ? 
-        `Sei sicuro di voler eliminare "${name}"? Questa azione non può essere annullata!` : 
-        `Are you sure you want to delete "${name}"? This action cannot be undone!`,
-    selectLocation: isItalian() ? 'Seleziona luogo...' : 'Select location...'
-};
+// Testi multilingua (valutati dinamicamente)
+function getTexts() {
+    const isIt = isItalian();
+    return {
+        alertExists: isIt ? 'Esiste già un luogo con questo nome!' : 'A location with this name already exists!',
+        confirmDelete: (name) => isIt ? 
+            `Sei sicuro di voler eliminare "${name}"? Questa azione non può essere annullata!` : 
+            `Are you sure you want to delete "${name}"? This action cannot be undone!`,
+        selectLocation: isIt ? 'Seleziona luogo...' : 'Select location...'
+    };
+}
+
+const TEXTS = getTexts();
 
 // Gestione dello storage locale
 const STORAGE_KEYS = {
@@ -63,7 +70,7 @@ function migrateLocations() {
     const migratedLocations = locations.map(loc => ({
         id: generateId(),
         name: typeof loc === 'string' ? capitalize(loc) : loc,
-        color: '#4CAF50'
+        color: '#FF0000'
     }));
     
     saveToStorage(STORAGE_KEYS.LOCATIONS, migratedLocations);
@@ -74,11 +81,50 @@ function migrateLocations() {
 let locations = migrateLocations();
 let currentEditingId = null;
 
+// Palette di colori (tonalità con saturazione e valore al massimo)
+const COLOR_PALETTE = [
+    '#FF0000', '#FF3300', '#FF6600', '#FF9900', '#FFCC00', '#FFFF00',
+    '#CCFF00', '#99FF00', '#66FF00', '#33FF00', '#00FF00', '#00FF33',
+    '#00FF66', '#00FF99', '#00FFCC', '#00FFFF', '#00CCFF', '#0099FF',
+    '#0066FF', '#0033FF', '#0000FF', '#3300FF', '#6600FF', '#9900FF',
+    '#CC00FF', '#FF00FF', '#FF00CC', '#FF0099', '#FF0066', '#FF0033'
+];
+
+// Funzione per creare la griglia di colori
+function createColorGrid(containerId, inputId, initialColor) {
+    const container = document.getElementById(containerId);
+    const input = document.getElementById(inputId);
+    
+    container.innerHTML = '';
+    
+    COLOR_PALETTE.forEach(color => {
+        const colorBox = document.createElement('div');
+        colorBox.className = 'color-box';
+        colorBox.style.backgroundColor = color;
+        
+        if (color === initialColor) {
+            colorBox.classList.add('selected');
+        }
+        
+        colorBox.addEventListener('click', () => {
+            // Rimuovi selezione precedente
+            container.querySelectorAll('.color-box').forEach(box => {
+                box.classList.remove('selected');
+            });
+            
+            // Aggiungi selezione al box cliccato
+            colorBox.classList.add('selected');
+            input.value = color;
+        });
+        
+        container.appendChild(colorBox);
+    });
+}
+
 // Elementi DOM
 const addLocationForm = document.getElementById('addLocationForm');
 const locationNameInput = document.getElementById('locationName');
 const locationColorInput = document.getElementById('locationColor');
-const colorHexInput = document.getElementById('colorHex');
 const locationsListDiv = document.getElementById('locationsList');
 const emptyStateDiv = document.getElementById('emptyState');
 const alertModal = document.getElementById('alertModal');
@@ -137,28 +183,8 @@ confirmModal.addEventListener('click', (e) => {
     if (e.target === confirmModal) closeConfirmModal();
 });
 
-// Sincronizza color picker con input hex
-locationColorInput.addEventListener('input', (e) => {
-    colorHexInput.value = e.target.value.toUpperCase();
-});
-
-colorHexInput.addEventListener('input', (e) => {
-    const hex = e.target.value;
-    if (/^#[0-9A-Fa-f]{6}$/.test(hex)) {
-        locationColorInput.value = hex;
-    }
-});
-
-editColorInput.addEventListener('input', (e) => {
-    editColorHexInput.value = e.target.value.toUpperCase();
-});
-
-editColorHexInput.addEventListener('input', (e) => {
-    const hex = e.target.value;
-    if (/^#[0-9A-Fa-f]{6}$/.test(hex)) {
-        editColorInput.value = hex;
-    }
-});
+// Inizializza le griglie di colori
+createColorGrid('colorGrid', 'locationColor', '#FF0000');
 
 // Aggiungi nuova location
 addLocationForm.addEventListener('submit', (e) => {
@@ -186,8 +212,7 @@ addLocationForm.addEventListener('submit', (e) => {
     
     // Reset form
     addLocationForm.reset();
-    locationColorInput.value = '#4CAF50';
-    colorHexInput.value = '#4CAF50';
+    createColorGrid('colorGrid', 'locationColor', '#FF0000');
     
     renderLocations();
 });
@@ -238,8 +263,7 @@ function editLocation(id) {
     
     if (location) {
         editNameInput.value = location.name;
-        editColorInput.value = location.color;
-        editColorHexInput.value = location.color.toUpperCase();
+        createColorGrid('editColorGrid', 'editColor', location.color);
         
         editModal.classList.add('show');
     }

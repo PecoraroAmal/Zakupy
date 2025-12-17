@@ -1,16 +1,23 @@
 // Rilevamento lingua
 function isItalian() {
-    return document.documentElement.lang === 'it' || window.location.pathname.includes('ricorrenti.html');
+    const htmlLang = document.documentElement.lang;
+    const pathname = window.location.pathname;
+    return htmlLang === 'it' || pathname.includes('indice.html') || pathname.includes('ricorrenti.html') || pathname.includes('posizioni.html') || pathname.includes('cronologia.html') || pathname.includes('impostazioni.html');
 }
 
-// Testi multilingua
-const TEXTS = {
-    selectLocation: isItalian() ? 'Seleziona luogo...' : 'Select location...',
-    alertNoLocation: isItalian() ? 'Seleziona o aggiungi un luogo' : 'Please select or add a location',
-    alertNoItems: isItalian() ? 'Nessun articolo ricorrente da caricare' : 'No recurring items to load',
-    confirmDelete: isItalian() ? 'Sei sicuro di voler eliminare questo articolo ricorrente?' : 'Are you sure you want to delete this recurring item?',
-    successAdded: isItalian() ? 'articoli aggiunti alla lista della spesa!' : 'items added to shopping list!'
-};
+// Testi multilingua (valutati dinamicamente)
+function getTexts() {
+    const isIt = isItalian();
+    return {
+        selectLocation: isIt ? 'Seleziona luogo...' : 'Select location...',
+        alertNoLocation: isIt ? 'Seleziona o aggiungi un luogo' : 'Please select or add a location',
+        alertNoItems: isIt ? 'Nessun articolo ricorrente da caricare' : 'No recurring items to load',
+        confirmDelete: isIt ? 'Sei sicuro di voler eliminare questo articolo ricorrente?' : 'Are you sure you want to delete this recurring item?',
+        successAdded: isIt ? 'articoli aggiunti alla lista della spesa!' : 'items added to shopping list!'
+    };
+}
+
+const TEXTS = getTexts();
 
 // Gestione dello storage locale
 const STORAGE_KEYS = {
@@ -287,7 +294,7 @@ editForm.addEventListener('submit', (e) => {
         const newLocationObj = {
             id: generateId(),
             name: location,
-            color: '#4CAF50'
+            color: '#FF0000'
         };
         locations.push(newLocationObj);
         saveToStorage(STORAGE_KEYS.LOCATIONS, locations);
@@ -350,7 +357,7 @@ loadAllBtn.addEventListener('click', () => {
 
 // Handler per il bottone del modal di successo
 goToShoppingListBtn.addEventListener('click', () => {
-    window.location.href = isItalian() ? 'indice.html?v=2.3' : 'index.html?v=2.3';
+    window.location.href = isItalian() ? 'indice.html?v=2.4' : 'index.html?v=2.4';
 });
 
 // Chiudi modal di successo cliccando fuori

@@ -1,13 +1,20 @@
 // Rilevamento lingua
 function isItalian() {
-    return document.documentElement.lang === 'it' || window.location.pathname.includes('indice.html');
+    const htmlLang = document.documentElement.lang;
+    const pathname = window.location.pathname;
+    return htmlLang === 'it' || pathname.includes('indice.html') || pathname.includes('ricorrenti.html') || pathname.includes('posizioni.html') || pathname.includes('cronologia.html') || pathname.includes('impostazioni.html');
 }
 
-// Testi multilingua
-const TEXTS = {
-    selectLocation: isItalian() ? 'Seleziona luogo...' : 'Select location...',
-    alertNoLocation: isItalian() ? 'Seleziona o aggiungi un luogo' : 'Please select or add a location'
-};
+// Testi multilingua (valutati dinamicamente)
+function getTexts() {
+    const isIt = isItalian();
+    return {
+        selectLocation: isIt ? 'Seleziona luogo...' : 'Select location...',
+        alertNoLocation: isIt ? 'Seleziona o aggiungi un luogo' : 'Please select or add a location'
+    };
+}
+
+const TEXTS = getTexts();
 
 // Gestione dello storage locale
 const STORAGE_KEYS = {
@@ -155,7 +162,7 @@ addItemForm.addEventListener('submit', (e) => {
         const newLocationObj = {
             id: generateId(),
             name: location,
-            color: '#4CAF50'
+            color: '#FF0000'
         };
         locations.push(newLocationObj);
         saveToStorage(STORAGE_KEYS.LOCATIONS, locations);
